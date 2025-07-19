@@ -1,0 +1,12 @@
+[project]
+name = "ypf-mami-3"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.1",
+    "pyside6>=6.9.1",
+    "ruff>=0.12.3",
+]
