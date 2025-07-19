@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QMainWindow
 
 
-class MainWindow(QMainWindow):
+class FileExplorerWindow(QMainWindow):
     def __init__(self, widget):
         super().__init__()
-        self.setWindowTitle("YPF Mami Tool")
+        self.setWindowTitle("File Explorer")
         self.setCentralWidget(widget)
 
         # Menu

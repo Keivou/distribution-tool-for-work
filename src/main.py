@@ -5,8 +5,8 @@ import pandas as pd
 
 from PySide6.QtWidgets import QApplication
 
-from main_window import MainWindow
-from main_widget import Widget
+from windows.main_window import MainWindow
+from widgets.main_widget import MainWidget
 
 def read_excel(excel_file):
     # Create Dataframe
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # QtApp
     app = QApplication(sys.argv)
 
-    widget = Widget()
+    widget = MainWidget()
 
     window = MainWindow(widget)
     window.resize(800, 600)

@@ -1,28 +1,6 @@
-# Cols to INPUT/CALC
+# GET STARTED
 
-A -> INPUT
-D -> INPUT
-G -> INPUT
-H -> INPUT
-I -> INPUT
-J -> CALC
-K -> INPUT
-L -> CALC
-T -> INPUT -> CHANGED ON 2ND ITERS
-U -> INPUT -> CHANGED ON 2ND ITERS
-V -> INPUT
-W -> INPUT
-Z -> CALC
-AA -> CALC
-AB -> CALC
-AC -> INPUT
-AG -> CALC
-AH -> CALC
-AI -> CALC
-AJ -> CALC
-AK -> CALC
-AL -> CALC
-AM -> CALC
-AN -> CALC
-AQ -> CALC
-AR -> CALC
+You will need 2 files:
+
+1. With data downloaded directly from Sahara with xxx variables
+2. With the x value for each y

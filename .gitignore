@@ -8,5 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Data and notes
 src/data
 pyside6_tutorial
+notes.md
