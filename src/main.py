@@ -8,6 +8,10 @@ from PySide6.QtWidgets import QApplication
 from windows.main_window import MainWindow
 from widgets.main_widget import MainWidget
 
+# ------------------------------------------------------------------
+#                         DATA PROCESSING
+# ------------------------------------------------------------------
+
 def read_excel(excel_file):
     # Create Dataframe
     df = pd.read_excel(excel_file)
@@ -23,8 +27,6 @@ def read_excel(excel_file):
         return df
     
     
-
-
 def transform_df_to_dict(df):
     """
     First, create a dates dictionary with unique dates and where the keys are tuples of the rest of the data inside a list -> {date: [(data1, data2, data3), (...), (...)]}.
@@ -54,6 +56,9 @@ def transform_df_to_dict(df):
 
     return wells_dict
 
+# ------------------------------------------------------------------
+#                              LOGIC
+# ------------------------------------------------------------------
 
 if __name__ == "__main__":
     # # Read excel file and get data
@@ -67,14 +72,13 @@ if __name__ == "__main__":
     # new_df = pd.DataFrame(data_dict)
     # new_df.to_excel("./data/parsed_test2.xlsx")
 
-
     # QtApp
     app = QApplication(sys.argv)
 
     widget = MainWidget()
 
     window = MainWindow(widget)
-    window.resize(800, 600)
+    # window.resize(800, 600)
     window.show()
 
     sys.exit(app.exec())
