@@ -14,6 +14,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Distribution Tool")
         self.setCentralWidget(widget)
+
+        # Signals
         widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
         
         # Menu
@@ -43,5 +45,8 @@ class MainWindow(QMainWindow):
     def help_action(self):
         QMessageBox.about(self, "Ayuda", "Esta aplicación toma como input: xxx, y devuelve" \
         "las distribuciones de cada pozo.")
+
+
+    
 
 

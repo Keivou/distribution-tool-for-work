@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QFileDialog
-from PySide6.QtCore import Qt, Slot, Signal
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLabel
+from PySide6.QtCore import Qt, Slot, QStringListModel
 
 class FileExplorerWidget(QWidget):
     def __init__(self):
@@ -9,16 +9,13 @@ class FileExplorerWidget(QWidget):
         self.vertical_layout = QVBoxLayout()
         self.setLayout(self.vertical_layout)
 
-        # File Explorer Field
-        self.file_explorer_field = QFileDialog()
-
         # Adding field to layout
-        self.vertical_layout.addWidget(self.file_explorer_field)
+        self.vertical_layout.addWidget(self.get_file_name())
 
-    #     # Signals and slots
-    #     self.file_explorer_field.clicked.connect(self.save_excel_to_data)
+        # Signals and slots
+        # self.file.clicked.connect(self.save_excel_to_data)
 
-    # @Slot()
-    # def save_excel_to_data(file):
-    #     with open(file, "w") as file:
-    #         pass
+    def get_file_name(self):
+        (file, filtr) = QFileDialog.getOpenFileName()
+        file_widget = QLabel(f"{file}")
+        return file_widget
