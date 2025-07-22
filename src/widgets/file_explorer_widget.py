@@ -10,12 +10,14 @@ class FileExplorerWidget(QWidget):
         self.setLayout(self.vertical_layout)
 
         # Adding field to layout
-        self.vertical_layout.addWidget(self.get_file_name())
+        self.file_name = self.insert_file_dialog()
 
         # Signals and slots
         # self.file.clicked.connect(self.save_excel_to_data)
 
-    def get_file_name(self):
+    def insert_file_dialog(self):
         (file, filtr) = QFileDialog.getOpenFileName()
         file_widget = QLabel(f"{file}")
-        return file_widget
+        self.vertical_layout.addWidget(file_widget)
+        return file_widget.text()
+            
