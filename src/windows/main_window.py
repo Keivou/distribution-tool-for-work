@@ -13,10 +13,11 @@ class MainWindow(QMainWindow):
     def __init__(self, widget):
         super().__init__()
         self.setWindowTitle("Distribution Tool")
-        self.setCentralWidget(widget)
+        self.main_widget = widget
+        self.setCentralWidget(self.main_widget)
 
         # Signals
-        widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
+        self.main_widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
         
         # Menu
         self.menu = self.menuBar()
@@ -30,7 +31,7 @@ class MainWindow(QMainWindow):
         exit_action.setShortcut("Ctrl+Q")
 
         # Load QAction
-        load_action = self.file_menu.addAction("Abrir", self.load_action)
+        self.file_menu.addAction("Cargar", self.load_action)
 
         ## Help Menu
 
@@ -48,7 +49,17 @@ class MainWindow(QMainWindow):
         self.file_explorer_widget = FileExplorerWidget()
         self.file_explorer_window = FileExplorerWindow(self.file_explorer_widget)
         self.file_explorer_window.show()
+
         self.file_name = self.file_explorer_widget.file_name
+
+        if self.file_explorer_widget.excelFileSelected:
+            self.file_explorer_window.hide()
+            self.main_widget.insert_button_1.setEnabled(False)
+
+    # @Slot()
+    # def gray_button_1(self):
+    #     self.main_widget.insert_button_1.setEnabled(False)
+    #     print(self.main_widget.insert_button_1.enabled())
 
     @Slot()
     def help_action(self):
