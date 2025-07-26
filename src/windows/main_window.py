@@ -17,7 +17,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         # Signals
-        self.main_widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
+        self.main_widget.firstFileExplorerWindowRequested.connect(self.open_first_file_explorer_window)
+        self.main_widget.secondFileExplorerWindowRequested.connect(self.open_second_file_explorer_window)
         
         # Menu
         self.menu = self.menuBar()
@@ -45,21 +46,28 @@ class MainWindow(QMainWindow):
     # ------------------------------------------------------------------
 
     @Slot()
-    def open_file_explorer_window(self):
-        self.file_explorer_widget = FileExplorerWidget()
-        self.file_explorer_window = FileExplorerWindow(self.file_explorer_widget)
-        self.file_explorer_window.show()
+    def open_first_file_explorer_window(self):
+        self.first_file_explorer_widget = FileExplorerWidget()
+        self.first_file_explorer_window = FileExplorerWindow(self.first_file_explorer_widget)
+        self.first_file_explorer_window.show()
 
-        self.file_name = self.file_explorer_widget.file_name
+        self.file_name = self.first_file_explorer_widget.file_name
 
-        if self.file_explorer_widget.excelFileSelected:
-            self.file_explorer_window.hide()
+        if self.first_file_explorer_widget.excelFileSelected:
+            self.first_file_explorer_window.hide()
             self.main_widget.insert_button_1.setEnabled(False)
 
-    # @Slot()
-    # def gray_button_1(self):
-    #     self.main_widget.insert_button_1.setEnabled(False)
-    #     print(self.main_widget.insert_button_1.enabled())
+    @Slot()
+    def open_second_file_explorer_window(self):
+        self.second_file_explorer_widget = FileExplorerWidget()
+        self.second_file_explorer_window = FileExplorerWindow(self.second_file_explorer_widget)
+        self.second_file_explorer_window.show()
+
+        self.file_name = self.second_file_explorer_widget.file_name
+
+        if self.second_file_explorer_widget.excelFileSelected:
+            self.second_file_explorer_window.hide()
+            self.main_widget.insert_button_2.setEnabled(False)
 
     @Slot()
     def help_action(self):
