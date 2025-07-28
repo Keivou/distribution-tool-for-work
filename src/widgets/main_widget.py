@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QLabel, QPushButton, QGroupBox, QMessageBox
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QGroupBox, QTableView
 from PySide6.QtCore import Qt, Slot, Signal
 
 
@@ -22,7 +22,8 @@ class MainWidget(QWidget):
         self.setLayout(self.vertical_layout)
         
         # Elements
-        (self.insert_button_1, self.insert_button_2) = self.insert_files_groupbox()
+        (self.insert_button_1, self.insert_button_2) = self._insert_files_groupbox()
+        self.qTable = self._insert_table()
 
         # Signals
         self.insert_button_1.clicked.connect(lambda: self.request_file_explorer_window(button=1))
@@ -40,7 +41,7 @@ class MainWidget(QWidget):
     #                        INTERNAL FUNCTIONS
     # ------------------------------------------------------------------
 
-    def insert_files_groupbox(self):
+    def _insert_files_groupbox(self):
         # Groupbox
         groupBox = QGroupBox("Insertar archivos")
 
@@ -70,4 +71,15 @@ class MainWidget(QWidget):
 
         return first_button, second_button
     
+    def _insert_table(self):
+        # Table
+        table = QTableView()
+        table.hide()
+
+        # Vertical box
+        vbox = QVBoxLayout()
+        table.setLayout(vbox)
+        self.vertical_layout.addWidget(table)
+
+        return table
     

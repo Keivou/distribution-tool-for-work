@@ -66,11 +66,17 @@ class MainWindow(QMainWindow):
             self.file_explorer_window.hide()
             if file_name != "" and button == 1:
                 self.main_widget.insert_button_1.setEnabled(False)
-                self.first_excel = file_name
-                self.load_excel(self.first_excel)
+                self.first_excel_df = self._load_excel(file_name)
+                print(self.first_excel_df.head())
             elif file_name != "" and button == 2:
                 self.main_widget.insert_button_2.setEnabled(False)
-                self.second_excel = file_name
+                self.second_excel_df = self._load_excel(file_name)
+                print(self.second_excel_df.head())
+
+        if (not self.main_widget.insert_button_1.isEnabled() and 
+            not self.main_widget.insert_button_2.isEnabled()):
+            # Table only appears if the excels have already been inserted
+            self.main_widget.qTable.show()
 
     @Slot()
     def help_action(self):
@@ -91,6 +97,8 @@ class MainWindow(QMainWindow):
         with QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor):
             print(info.readAll())
         
-    def load_excel(self, file_name):
-        df = pd.read_excel(file_name)
-        print(df.head())
+    def _load_excel(self, file_name):
+        try:
+            return pd.read_excel(file_name)
+        except FileNotFoundError or ValueError:
+            return

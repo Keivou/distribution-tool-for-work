@@ -21,10 +21,10 @@ class FileExplorerWidget(QWidget):
         self.setLayout(self.vertical_layout)
 
         # Adding field to layout
-        self.file_name = self.insert_file_dialog()
+        self.file_name = self._insert_file_dialog()
 
         if self.file_name:
-            self.excel_file_selected()
+            self._excel_file_selected()
             
 
     # ------------------------------------------------------------------
@@ -36,11 +36,10 @@ class FileExplorerWidget(QWidget):
     #                        INTERNAL FUNCTIONS
     # ------------------------------------------------------------------ 
     
-    def excel_file_selected(self):
-        self.excelFileSelected.emit()
-
-    def insert_file_dialog(self):
+    def _insert_file_dialog(self):
         (file, filtr) = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xlsx *.xls)")
         file_widget = QLabel(f"{file}")
         return file_widget.text()
             
+    def _excel_file_selected(self):
+        self.excelFileSelected.emit()
