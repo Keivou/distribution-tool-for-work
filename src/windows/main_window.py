@@ -1,8 +1,11 @@
-from PySide6.QtWidgets import QMainWindow, QMessageBox, QApplication
+from PySide6.QtWidgets import QMainWindow, QMessageBox, QApplication, QPushButton
 from PySide6.QtCore import Slot, QFile, Qt, QTextStream
+
+import pandas as pd
 
 from windows.file_explorer_window import FileExplorerWindow
 from widgets.file_explorer_widget import FileExplorerWidget
+
 
 class MainWindow(QMainWindow):
 
@@ -16,25 +19,31 @@ class MainWindow(QMainWindow):
         self.main_widget = widget
         self.setCentralWidget(self.main_widget)
 
+        # Variables
+        self.first_excel = ""
+        self.second_excel = ""
+
         # Signals
-        self.main_widget.firstFileExplorerWindowRequested.connect(self.open_first_file_explorer_window)
-        self.main_widget.secondFileExplorerWindowRequested.connect(self.open_second_file_explorer_window)
+        self.main_widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
         
         # Menu
         self.menu = self.menuBar()
         self.file_menu = self.menu.addMenu("Archivo")
         self.help_menu = self.menu.addMenu("Ayuda")
 
-        ## File Menu
+        ### File Menu ###
 
         # Exit QAction
         exit_action = self.file_menu.addAction("Salir", self.close)
         exit_action.setShortcut("Ctrl+Q")
 
-        # Load QAction
-        self.file_menu.addAction("Cargar", self.load_action)
+        # Load QAction (First Excel)
+        self.file_menu.addAction("Cargar 1er Excel", lambda: self.load_action(self.first_excel))
 
-        ## Help Menu
+        # Load QAction (Second Excel)
+        self.file_menu.addAction("Cargar 2do Excel", lambda: self.load_action(self.second_excel))
+
+        ### Help Menu ###
 
         # Help QAction
         help_action = self.help_menu.addAction("Ayuda", self.help_action)
@@ -46,28 +55,22 @@ class MainWindow(QMainWindow):
     # ------------------------------------------------------------------
 
     @Slot()
-    def open_first_file_explorer_window(self):
-        self.first_file_explorer_widget = FileExplorerWidget()
-        self.first_file_explorer_window = FileExplorerWindow(self.first_file_explorer_widget)
-        self.first_file_explorer_window.show()
+    def open_file_explorer_window(self, button: int):
+        self.file_explorer_widget = FileExplorerWidget()
+        self.file_explorer_window = FileExplorerWindow(self.file_explorer_widget)
+        self.file_explorer_window.show()
 
-        self.file_name = self.first_file_explorer_widget.file_name
+        file_name = self.file_explorer_widget.file_name
 
-        if self.first_file_explorer_widget.excelFileSelected:
-            self.first_file_explorer_window.hide()
-            self.main_widget.insert_button_1.setEnabled(False)
-
-    @Slot()
-    def open_second_file_explorer_window(self):
-        self.second_file_explorer_widget = FileExplorerWidget()
-        self.second_file_explorer_window = FileExplorerWindow(self.second_file_explorer_widget)
-        self.second_file_explorer_window.show()
-
-        self.file_name = self.second_file_explorer_widget.file_name
-
-        if self.second_file_explorer_widget.excelFileSelected:
-            self.second_file_explorer_window.hide()
-            self.main_widget.insert_button_2.setEnabled(False)
+        if self.file_explorer_widget.excelFileSelected:
+            self.file_explorer_window.hide()
+            if file_name != "" and button == 1:
+                self.main_widget.insert_button_1.setEnabled(False)
+                self.first_excel = file_name
+                self.load_excel(self.first_excel)
+            elif file_name != "" and button == 2:
+                self.main_widget.insert_button_2.setEnabled(False)
+                self.second_excel = file_name
 
     @Slot()
     def help_action(self):
@@ -76,18 +79,18 @@ class MainWindow(QMainWindow):
 
     # NOT QUITE THE RIGHT APPLICATION, BUT GOOD FOR TESTING FOR NOW
     @Slot()
-    def load_action(self):
-        file = QFile(self.file_name)
+    def load_action(self, file_name):
+        file = QFile(file_name)
 
         if not file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
             reason = file.errorString()
-            QMessageBox.warning(self, "Application", f"Cannot read file {self.file_name}:\n{reason}.")
+            QMessageBox.warning(self, "Application", f"Cannot read file {file_name}:\n{reason}.")
             return
 
         info = QTextStream(file)
         with QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor):
-            print(info.readAll()) # <- DO SOMETHING ELSE INSTEAD OF PRINTING
-
-    
-
-
+            print(info.readAll())
+        
+    def load_excel(self, file_name):
+        df = pd.read_excel(file_name)
+        print(df.head())

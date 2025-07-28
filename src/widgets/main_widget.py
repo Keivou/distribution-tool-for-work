@@ -8,8 +8,7 @@ class MainWidget(QWidget):
     #                          CUSTOM SIGNALS
     # ------------------------------------------------------------------
 
-    firstFileExplorerWindowRequested = Signal()
-    secondFileExplorerWindowRequested = Signal()
+    fileExplorerWindowRequested = Signal(int)
 
     # ------------------------------------------------------------------
     #                               INIT
@@ -26,20 +25,16 @@ class MainWidget(QWidget):
         (self.insert_button_1, self.insert_button_2) = self.insert_files_groupbox()
 
         # Signals
-        self.insert_button_1.clicked.connect(self.request_first_file_explorer_window)
-        self.insert_button_2.clicked.connect(self.request_second_file_explorer_window)
+        self.insert_button_1.clicked.connect(lambda: self.request_file_explorer_window(button=1))
+        self.insert_button_2.clicked.connect(lambda: self.request_file_explorer_window(button=2))
 
     # ------------------------------------------------------------------
     #                              SLOTS
     # ------------------------------------------------------------------
 
     @Slot()
-    def request_first_file_explorer_window(self):
-        self.firstFileExplorerWindowRequested.emit()
-
-    @Slot()
-    def request_second_file_explorer_window(self):
-        self.secondFileExplorerWindowRequested.emit()
+    def request_file_explorer_window(self, button: int):
+        self.fileExplorerWindowRequested.emit(button)
 
     # ------------------------------------------------------------------
     #                        INTERNAL FUNCTIONS
