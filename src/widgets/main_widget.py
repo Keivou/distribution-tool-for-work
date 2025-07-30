@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QGroupBox, QTableView
 from PySide6.QtCore import Qt, Slot, Signal
+from adapters import TableModel
 
 
 class MainWidget(QWidget):
@@ -22,8 +23,8 @@ class MainWidget(QWidget):
         self.setLayout(self.vertical_layout)
         
         # Elements
-        (self.insert_button_1, self.insert_button_2) = self._insert_files_groupbox()
-        self.qTable = self._insert_table()
+        self._insert_files_groupbox()
+        self._insert_table()
 
         # Signals
         self.insert_button_1.clicked.connect(lambda: self.request_file_explorer_window(button=1))
@@ -48,17 +49,17 @@ class MainWidget(QWidget):
         # First insert
         first_hbox = QHBoxLayout()
         first_label = QLabel("Insertar primer archivo:")
-        first_button = QPushButton("Insertar")
+        self.insert_button_1 = QPushButton("Insertar")
         first_hbox.addWidget(first_label)
-        first_hbox.addWidget(first_button)
+        first_hbox.addWidget(self.insert_button_1)
         first_hbox.setAlignment(Qt.AlignLeft)
 
         # Second insert
         second_hbox = QHBoxLayout()
         second_label = QLabel("Insertar segundo archivo:")
-        second_button = QPushButton("Insertar")
+        self.insert_button_2 = QPushButton("Insertar")
         second_hbox.addWidget(second_label)
-        second_hbox.addWidget(second_button)
+        second_hbox.addWidget(self.insert_button_2)
         second_hbox.setAlignment(Qt.AlignLeft)
 
         # Vertical box
@@ -68,18 +69,12 @@ class MainWidget(QWidget):
         vbox.addStretch(1)
         groupBox.setLayout(vbox)
         self.vertical_layout.addWidget(groupBox)
-
-        return first_button, second_button
     
     def _insert_table(self):
         # Table
-        table = QTableView()
-        table.hide()
+        self.table = QTableView()
+        self.vertical_layout.addWidget(self.table)
 
-        # Vertical box
-        vbox = QVBoxLayout()
-        table.setLayout(vbox)
-        self.vertical_layout.addWidget(table)
-
-        return table
+        # Table is hidden before the data is confirmed
+        self.table.hide()
     

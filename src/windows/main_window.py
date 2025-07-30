@@ -5,6 +5,7 @@ import pandas as pd
 
 from windows.file_explorer_window import FileExplorerWindow
 from widgets.file_explorer_widget import FileExplorerWidget
+from adapters.TableModel import TableModel
 
 
 class MainWindow(QMainWindow):
@@ -19,10 +20,6 @@ class MainWindow(QMainWindow):
         self.main_widget = widget
         self.setCentralWidget(self.main_widget)
 
-        # Variables
-        self.first_excel = ""
-        self.second_excel = ""
-
         # Signals
         self.main_widget.fileExplorerWindowRequested.connect(self.open_file_explorer_window)
         
@@ -31,7 +28,9 @@ class MainWindow(QMainWindow):
         self.file_menu = self.menu.addMenu("Archivo")
         self.help_menu = self.menu.addMenu("Ayuda")
 
-        ### File Menu ###
+        # ------------------------------------------------------------------
+        #                            FILE MENU
+        # ------------------------------------------------------------------
 
         # Exit QAction
         exit_action = self.file_menu.addAction("Salir", self.close)
@@ -43,7 +42,9 @@ class MainWindow(QMainWindow):
         # Load QAction (Second Excel)
         self.file_menu.addAction("Cargar 2do Excel", lambda: self.load_action(self.second_excel))
 
-        ### Help Menu ###
+        # ------------------------------------------------------------------
+        #                            HELP MENU
+        # ------------------------------------------------------------------
 
         # Help QAction
         help_action = self.help_menu.addAction("Ayuda", self.help_action)
@@ -67,7 +68,12 @@ class MainWindow(QMainWindow):
             if file_name != "" and button == 1:
                 self.main_widget.insert_button_1.setEnabled(False)
                 self.first_excel_df = self._load_excel(file_name)
-                print(self.first_excel_df.head())
+                print(type(self.first_excel_df))
+
+                data_model = TableModel(self.first_excel_df)
+                self.main_widget.table.setModel(data_model)
+
+                print(len(self.first_excel_df.columns))
             elif file_name != "" and button == 2:
                 self.main_widget.insert_button_2.setEnabled(False)
                 self.second_excel_df = self._load_excel(file_name)
@@ -76,7 +82,7 @@ class MainWindow(QMainWindow):
         if (not self.main_widget.insert_button_1.isEnabled() and 
             not self.main_widget.insert_button_2.isEnabled()):
             # Table only appears if the excels have already been inserted
-            self.main_widget.qTable.show()
+            self.main_widget.table.show()
 
     @Slot()
     def help_action(self):
