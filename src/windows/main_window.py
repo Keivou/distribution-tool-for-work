@@ -83,6 +83,7 @@ class MainWindow(QMainWindow):
             not self.main_widget.insert_button_2.isEnabled()):
             # Table only appears if the excels have already been inserted
             self.main_widget.table.show()
+            self.resize(800, 600)
 
     @Slot()
     def help_action(self):
