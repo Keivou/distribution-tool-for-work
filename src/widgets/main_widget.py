@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QGroupBox, QTableView
 from PySide6.QtCore import Qt, Slot, Signal
-from adapters import TableModel
 
+from misc.buttons import Button
 
 class MainWidget(QWidget):
 
@@ -29,6 +29,8 @@ class MainWidget(QWidget):
         # Signals
         self.insert_button_1.clicked.connect(lambda: self.request_file_explorer_window(button=1))
         self.insert_button_2.clicked.connect(lambda: self.request_file_explorer_window(button=2))
+        self.confirm_button.clicked.connect(lambda: self.request_file_explorer_window(button=3))
+        self.cancel_button.clicked.connect(lambda: self.request_file_explorer_window(button=4))
 
     # ------------------------------------------------------------------
     #                              SLOTS
@@ -62,10 +64,19 @@ class MainWidget(QWidget):
         second_hbox.addWidget(self.insert_button_2)
         second_hbox.setAlignment(Qt.AlignLeft)
 
+        # Confirm or Cancel (Cancel wipes the excels from the self variables)
+        third_hbox = QHBoxLayout()
+        self.confirm_button = QPushButton("Confirmar")
+        self.cancel_button = QPushButton("Cancelar")
+        third_hbox.addWidget(self.confirm_button)
+        third_hbox.addWidget(self.cancel_button)
+        third_hbox.setAlignment(Qt.AlignCenter)
+
         # Vertical box
         vbox = QVBoxLayout()
         vbox.addLayout(first_hbox)
         vbox.addLayout(second_hbox)
+        vbox.addLayout(third_hbox)
         vbox.addStretch(1)
         groupBox.setLayout(vbox)
         self.vertical_layout.addWidget(groupBox)

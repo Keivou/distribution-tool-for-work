@@ -23,7 +23,7 @@ class TableModel(QAbstractTableModel):
     def data(self, index, role=Qt.DisplayRole):
         # Display data
         if role == Qt.DisplayRole:
-            print("Display role:", self._df.iloc[index.row()], self._df.iloc[index.column()])
+            print("Display role:", self._df.iloc[index.row()], self._df.iloc[index.column() - 1])
 
             try:
                 return str(self._df.iloc[index.row(), index.column()])
@@ -54,7 +54,7 @@ class TableModel(QAbstractTableModel):
 
     def setData(self, index, value, role=Qt.EditRole):
         if role in (Qt.DisplayRole, Qt.EditRole):
-            print("Display/Edit role:", self._df.iloc[index.row()], self._df.iloc[index.column()])
+            print("Display/Edit role:", self._df.iloc[index.row()], self._df.iloc[index.column() - 1])
             # If value is blank
             if not value:
                 return False

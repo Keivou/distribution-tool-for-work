@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLabel
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import Signal
 
 class FileExplorerWidget(QWidget):
 
